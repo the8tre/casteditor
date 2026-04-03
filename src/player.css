@@ -1,0 +1,4 @@
+/* Always show the asciinema-player control bar */
+div.ap-player div.ap-control-bar {
+  opacity: 1 !important;
+}
