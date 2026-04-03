@@ -5,6 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import { useRef } from 'react';
@@ -70,6 +71,12 @@ export default function MainToolbar() {
           </Tooltip>
 
           <ExportButton />
+
+          <Tooltip title="View on GitHub">
+            <IconButton size="small" component="a" href="https://github.com/the8tre/casteditor" target="_blank" rel="noopener noreferrer">
+              <GitHubIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
         </Box>
 
         <input
