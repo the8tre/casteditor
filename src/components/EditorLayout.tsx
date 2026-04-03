@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import { useEditor } from '../state/documentStore';
 import PlayerBridge from '../player/PlayerBridge';
 import type { PlayerBridgeHandle } from '../player/PlayerBridge';
@@ -56,7 +57,34 @@ export default function EditorLayout() {
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden', position: 'relative' }}>
+      <Box
+        component="a"
+        href="https://github.com/the8tre/casteditor"
+        target="_blank"
+        rel="noopener noreferrer"
+        sx={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          width: 64,
+          height: 64,
+          overflow: 'hidden',
+          zIndex: 1200,
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            borderStyle: 'solid',
+            borderWidth: '0 64px 64px 0',
+            borderColor: 'transparent #fff transparent transparent',
+          },
+        }}
+      >
+        <GitHubIcon sx={{ position: 'absolute', top: 6, right: 6, fontSize: 28, color: '#000', transform: 'rotate(45deg)' }} />
+      </Box>
+
       <MainToolbar />
 
       <Box sx={{ flex: '1 1 0', minHeight: 0, overflow: 'hidden', p: 1 }}>
