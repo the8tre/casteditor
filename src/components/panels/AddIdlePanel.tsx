@@ -1,10 +1,10 @@
-import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Slider from '@mui/material/Slider';
 import Button from '@mui/material/Button';
 import { useEditor } from '../../state/documentStore';
 import { getPanelColor } from '../../theme/panelColors';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 const c = getPanelColor('addIdle');
 const COLOR = `rgb(${c.r},${c.g},${c.b})`;
@@ -12,7 +12,7 @@ const COLOR_HOVER = `rgba(${c.r},${c.g},${c.b},0.85)`;
 
 export default function AddIdlePanel() {
   const { state, dispatch } = useEditor();
-  const [duration, setDuration] = useState(1.0);
+  const [duration, setDuration] = useLocalStorage('tools.addIdle.duration', 1.0);
 
   const handleApply = () => {
     dispatch({ type: 'APPLY_ADD_IDLE', payload: { atTime: state.playhead, duration } });

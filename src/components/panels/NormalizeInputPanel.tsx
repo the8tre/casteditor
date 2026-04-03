@@ -1,14 +1,14 @@
-import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useEditor } from '../../state/documentStore';
 import { getPanelColor } from '../../theme/panelColors';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 export default function NormalizeInputPanel() {
   const { state, dispatch } = useEditor();
-  const [interval, setInterval] = useState(0.1);
+  const [interval, setInterval] = useLocalStorage('tools.normalizeInput.interval', 0.1);
 
   const inputCount = state.document?.events.filter(e => e.type === 'i').length ?? 0;
 

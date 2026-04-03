@@ -16,7 +16,9 @@ Give a try to the live app here: https://the8tre.github.io/casteditor/
 - **Resize** — change terminal dimensions
 - **Replace Text** — find and replace text in output events
 - **Undo / Redo** — full history (Ctrl+Z / Ctrl+Y)
-- **Export** — download the edited `.cast` file
+- **Export** — download as `asciicast v2` or animated **SVG** (with window chrome and cursor options)
+- **Load Sample** — try the editor instantly with a built-in example recording
+- Tool options (idle threshold, idle length, key interval) are remembered across sessions via localStorage
 
 ## Create your own casts
 - `brew install asciinema`
@@ -46,4 +48,5 @@ npm run build   # outputs to dist/
 - [MUI v5](https://mui.com/)
 - [Vite 5](https://vitejs.dev/)
 - [asciinema-player v3](https://github.com/asciinema/asciinema-player)
+- [svg-term](https://github.com/marionebl/svg-term) (forked, browser-compatible build)
 - TypeScript

@@ -1,14 +1,14 @@
-import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Slider from '@mui/material/Slider';
 import Button from '@mui/material/Button';
 import { useEditor } from '../../state/documentStore';
 import { getPanelColor } from '../../theme/panelColors';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 export default function RemoveIdlePanel() {
   const { dispatch } = useEditor();
-  const [threshold, setThreshold] = useState(2.0);
+  const [threshold, setThreshold] = useLocalStorage('tools.removeIdle.threshold', 2.0);
 
   const handleApply = () => {
     dispatch({ type: 'APPLY_REMOVE_IDLE', payload: { threshold } });
