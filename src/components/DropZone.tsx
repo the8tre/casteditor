@@ -2,8 +2,6 @@ import { useCallback, useRef } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { useFileLoader } from '../hooks/useFileLoader';
@@ -27,18 +25,35 @@ export default function DropZone() {
 
   return (
     <Box sx={{ height: '100vh', overflow: 'hidden', p: 4, boxSizing: 'border-box', position: 'relative' }}>
-      <Tooltip title="View on GitHub">
-        <IconButton
-          component="a"
-          href="https://github.com/the8tre/casteditor"
-          target="_blank"
-          rel="noopener noreferrer"
-          sx={{ position: 'absolute', top: 8, right: 8 }}
-          onClick={e => e.stopPropagation()}
-        >
-          <GitHubIcon />
-        </IconButton>
-      </Tooltip>
+      <Box
+        component="a"
+        href="https://github.com/the8tre/casteditor"
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={e => e.stopPropagation()}
+        sx={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          width: 64,
+          height: 64,
+          overflow: 'hidden',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            borderStyle: 'solid',
+            borderWidth: '0 64px 64px 0',
+            borderColor: 'transparent #fff transparent transparent',
+          },
+          display: 'flex',
+          alignItems: 'flex-start',
+          justifyContent: 'flex-end',
+        }}
+      >
+        <GitHubIcon sx={{ position: 'absolute', top: 6, right: 6, fontSize: 28, color: '#000', transform: 'rotate(45deg)' }} />
+      </Box>
     <Box
       onDrop={handleDrop}
       onDragOver={handleDragOver}
