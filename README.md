@@ -19,6 +19,7 @@ Give a try to the live app here: https://the8tre.github.io/casteditor/
 - **Export** — download the edited `.cast` file
 
 ## Create your own casts
+- `brew install asciinema`
 - Follow the directions here: https://docs.asciinema.org/getting-started/
 - Format must be `asciicast-v2`
 - Be sure to use the `--stdin` option if you want the user input to be captured and be able to use the Normalize Input feature
