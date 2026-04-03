@@ -2,7 +2,10 @@ import { useCallback, useRef } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import { useFileLoader } from '../hooks/useFileLoader';
 
 export default function DropZone() {
@@ -23,7 +26,19 @@ export default function DropZone() {
   };
 
   return (
-    <Box sx={{ height: '100vh', overflow: 'hidden', p: 4, boxSizing: 'border-box' }}>
+    <Box sx={{ height: '100vh', overflow: 'hidden', p: 4, boxSizing: 'border-box', position: 'relative' }}>
+      <Tooltip title="View on GitHub">
+        <IconButton
+          component="a"
+          href="https://github.com/the8tre/casteditor"
+          target="_blank"
+          rel="noopener noreferrer"
+          sx={{ position: 'absolute', top: 8, right: 8 }}
+          onClick={e => e.stopPropagation()}
+        >
+          <GitHubIcon />
+        </IconButton>
+      </Tooltip>
     <Box
       onDrop={handleDrop}
       onDragOver={handleDragOver}
