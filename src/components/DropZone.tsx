@@ -1,14 +1,35 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { useFileLoader } from '../hooks/useFileLoader';
+import { parseCast } from '../parser/castParser';
+import { useEditor } from '../state/documentStore';
+
+const SAMPLE_URL = "https://asciinema.org/a/335480.cast";
 
 export default function DropZone() {
   const { loadFile } = useFileLoader();
+  const { dispatch } = useEditor();
   const inputRef = useRef<HTMLInputElement>(null);
+  const [loadingSample, setLoadingSample] = useState(false);
+
+  const loadSample = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLoadingSample(true);
+    try {
+      const res = await fetch(SAMPLE_URL);
+      const text = await res.text();
+      const document = parseCast(text);
+      dispatch({ type: 'LOAD_FILE', payload: { document, filename: 'sample.cast' } });
+    } catch (err) {
+      alert(`Failed to load sample: ${err instanceof Error ? err.message : String(err)}`);
+    } finally {
+      setLoadingSample(false);
+    }
+  };
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -73,7 +94,7 @@ export default function DropZone() {
       onClick={() => inputRef.current?.click()}
     >
       <Typography variant="h2" component="div" sx={{ fontWeight: 700, letterSpacing: 0, userSelect: 'none' }}>
-        Cast<Box component="span" sx={{ opacity: 0.45, fontWeight: 400 }}>(edit)</Box>or
+        Cast<Box component="span" sx={{ opacity: 0.45, fontWeight: 400 }}>/edit/</Box>or
       </Typography>
       <UploadFileIcon sx={{ fontSize: 64, color: 'primary.main' }} />
       <Typography variant="h5" component="h1">
@@ -84,6 +105,10 @@ export default function DropZone() {
       </Typography>
       <Button variant="outlined" onClick={e => { e.stopPropagation(); inputRef.current?.click(); }}>
         Open File
+      </Button>
+      <Typography variant="body2" color="text.secondary">or</Typography>
+      <Button variant="outlined" onClick={loadSample} disabled={loadingSample}>
+        {loadingSample ? 'Loading…' : 'Load Sample'}
       </Button>
       <input
         ref={inputRef}

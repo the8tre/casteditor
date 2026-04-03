@@ -42,6 +42,11 @@ export default function NormalizeInputPanel() {
       >
         Apply
       </Button>
+      {inputCount === 0 && (
+        <Typography variant="caption" color="text.secondary" sx={{ fontStyle: 'italic' }}>
+          No input events in this cast. Use <code>--stdin</code> during recording.
+        </Typography>
+      )}
     </Box>
   );
 }

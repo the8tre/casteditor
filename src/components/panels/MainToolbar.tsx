@@ -29,7 +29,7 @@ export default function MainToolbar() {
     <AppBar position="static" color="default" elevation={1}>
       <Toolbar variant="dense">
         <Typography variant="h6" sx={{ mr: 2, fontWeight: 700, letterSpacing: 0 }}>
-          Cast<Box component="span" sx={{ opacity: 0.45, fontWeight: 400 }}>(edit)</Box>or
+          Cast<Box component="span" sx={{ opacity: 0.45, fontWeight: 400 }}>/edit/</Box>or
         </Typography>
 
         {state.filename && (
