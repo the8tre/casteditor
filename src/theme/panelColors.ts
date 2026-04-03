@@ -5,6 +5,7 @@ export const PANEL_COLORS: Record<string, { r: number; g: number; b: number }> =
   cut:            { r: 244, g:  67, b:  54 },
   speed:          { r: 156, g:  39, b: 176 },
   removeIdle:     { r:   0, g: 188, b: 212 },
+  addIdle:        { r: 105, g: 240, b: 174 },
   normalizeInput: { r:  33, g: 150, b: 243 },
   resize:         { r:  76, g: 175, b:  80 },
   replaceText:    { r: 255, g: 235, b:  59 },

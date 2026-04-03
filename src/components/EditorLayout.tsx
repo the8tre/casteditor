@@ -12,6 +12,7 @@ import TrimPanel from './panels/TrimPanel';
 import CutPanel from './panels/CutPanel';
 import SpeedPanel from './panels/SpeedPanel';
 import RemoveIdlePanel from './panels/RemoveIdlePanel';
+import AddIdlePanel from './panels/AddIdlePanel';
 import NormalizeInputPanel from './panels/NormalizeInputPanel';
 import ResizePanel from './panels/ResizePanel';
 import ReplaceTextPanel from './panels/ReplaceTextPanel';
@@ -49,6 +50,7 @@ export default function EditorLayout() {
       case 'cut': return <CutPanel />;
       case 'speed': return <SpeedPanel />;
       case 'removeIdle': return <RemoveIdlePanel />;
+      case 'addIdle': return <AddIdlePanel />;
       case 'normalizeInput': return <NormalizeInputPanel />;
       case 'resize': return <ResizePanel />;
       case 'replaceText': return <ReplaceTextPanel />;

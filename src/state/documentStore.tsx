@@ -8,6 +8,7 @@ import { applyRemoveIdle } from '../transforms/removeIdle';
 import { applyResize } from '../transforms/resizeTerminal';
 import { applyNormalizeInput } from '../transforms/normalizeInput';
 import { applyReplaceText } from '../transforms/replaceText';
+import { addIdle } from '../transforms/addIdle';
 
 const MAX_UNDO = 50;
 
@@ -33,6 +34,7 @@ function reducer(state: EditorState, action: Action): EditorState {
         ...initialState,
         document: action.payload.document,
         filename: action.payload.filename,
+        activePanel: 'info',
       };
 
     case 'SET_SELECTION':
@@ -82,6 +84,17 @@ function reducer(state: EditorState, action: Action): EditorState {
     case 'APPLY_REMOVE_IDLE': {
       if (!state.document) return state;
       const newDoc = applyRemoveIdle(state.document, action.payload.threshold);
+      return {
+        ...state,
+        document: newDoc,
+        past: pushUndo(state.past, state.document),
+        future: [],
+      };
+    }
+
+    case 'APPLY_ADD_IDLE': {
+      if (!state.document) return state;
+      const newDoc = addIdle(state.document, action.payload.atTime, action.payload.duration);
       return {
         ...state,
         document: newDoc,

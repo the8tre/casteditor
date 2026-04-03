@@ -72,6 +72,9 @@ export default function DropZone() {
       }}
       onClick={() => inputRef.current?.click()}
     >
+      <Typography variant="h2" component="div" sx={{ fontWeight: 700, letterSpacing: 0, userSelect: 'none' }}>
+        Cast<Box component="span" sx={{ opacity: 0.45, fontWeight: 400 }}>(edit)</Box>or
+      </Typography>
       <UploadFileIcon sx={{ fontSize: 64, color: 'primary.main' }} />
       <Typography variant="h5" component="h1">
         Drop a <code>.cast</code> file here

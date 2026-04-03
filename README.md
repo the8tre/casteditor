@@ -1,4 +1,4 @@
-# CastEditor
+# Cast(edit)or
 
 A browser-based editor for [asciinema](https://asciinema.org/) recordings (`.cast` files).
 100% client-side — no server, no uploads, your files never leave the browser.
@@ -9,6 +9,7 @@ A browser-based editor for [asciinema](https://asciinema.org/) recordings (`.cas
 - **Cut** — remove a time range
 - **Speed** — change playback speed globally or within a selection
 - **Remove Idle** — cap long pauses to a maximum gap
+- **Add Idle** — insert a pause of chosen duration at the playhead position
 - **Normalize Input** — even out keystroke timing
 - **Resize** — change terminal dimensions
 - **Replace Text** — find and replace text in output events
@@ -32,7 +33,7 @@ npm run build   # outputs to dist/
 
 ## Stack
 
-- [React 18](https://react.dev/)
+- [React 19](https://react.dev/)
 - [MUI v5](https://mui.com/)
 - [Vite 5](https://vitejs.dev/)
 - [asciinema-player v3](https://github.com/asciinema/asciinema-player)

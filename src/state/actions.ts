@@ -9,6 +9,7 @@ export type Action =
   | { type: 'APPLY_CUT'; payload: TimeRange }
   | { type: 'APPLY_SPEED'; payload: { multiplier: number; range?: TimeRange } }
   | { type: 'APPLY_REMOVE_IDLE'; payload: { threshold: number } }
+  | { type: 'APPLY_ADD_IDLE'; payload: { atTime: number; duration: number } }
   | { type: 'APPLY_RESIZE'; payload: { width: number; height: number } }
   | { type: 'APPLY_NORMALIZE_INPUT'; payload: { interval: number } }
   | { type: 'APPLY_REPLACE_TEXT'; payload: { search: string; replacement: string } }

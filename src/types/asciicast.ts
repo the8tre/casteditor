@@ -23,7 +23,7 @@ export interface CastDocument {
 
 export interface TimeRange { start: number; end: number; }
 
-export type PanelId = 'trim' | 'cut' | 'speed' | 'removeIdle' | 'normalizeInput' | 'resize' | 'replaceText' | 'info';
+export type PanelId = 'trim' | 'cut' | 'speed' | 'removeIdle' | 'addIdle' | 'normalizeInput' | 'resize' | 'replaceText' | 'info';
 
 export interface EditorState {
   document: CastDocument | null;

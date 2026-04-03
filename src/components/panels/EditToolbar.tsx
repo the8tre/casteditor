@@ -11,6 +11,7 @@ const PANELS: { id: PanelId; label: string }[] = [
   { id: 'trim', label: 'Trim' },
   { id: 'cut', label: 'Cut' },
   { id: 'removeIdle', label: 'Remove Idle' },
+  { id: 'addIdle', label: 'Add Idle' },
   { id: 'normalizeInput', label: 'Normalize Input' },
   { id: 'replaceText', label: 'Replace Text' },
 ];
