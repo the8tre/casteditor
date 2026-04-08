@@ -7,6 +7,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import { useFileLoader } from '../hooks/useFileLoader';
 import { parseCast } from '../parser/castParser';
 import { useEditor } from '../state/documentStore';
+import { Code } from '@mui/icons-material';
 
 const SAMPLE_URL = "https://asciinema.org/a/335480.cast";
 
@@ -45,79 +46,131 @@ export default function DropZone() {
   };
 
   return (
-    <Box sx={{ height: '100vh', overflow: 'hidden', p: 4, boxSizing: 'border-box', position: 'relative' }}>
+    <Box
+      sx={{
+        height: "100vh",
+        overflow: "hidden",
+        p: 4,
+        boxSizing: "border-box",
+        position: "relative",
+      }}
+    >
       <Box
         component="a"
         href="https://github.com/the8tre/casteditor"
         target="_blank"
         rel="noopener noreferrer"
-        onClick={e => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
         sx={{
-          position: 'absolute',
+          position: "absolute",
           top: 0,
           right: 0,
           width: 64,
           height: 64,
-          overflow: 'hidden',
-          '&::before': {
+          overflow: "hidden",
+          "&::before": {
             content: '""',
-            position: 'absolute',
+            position: "absolute",
             top: 0,
             right: 0,
-            borderStyle: 'solid',
-            borderWidth: '0 64px 64px 0',
-            borderColor: 'transparent #fff transparent transparent',
+            borderStyle: "solid",
+            borderWidth: "0 64px 64px 0",
+            borderColor: "transparent #fff transparent transparent",
           },
-          display: 'flex',
-          alignItems: 'flex-start',
-          justifyContent: 'flex-end',
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "flex-end",
         }}
       >
-        <GitHubIcon sx={{ position: 'absolute', top: 6, right: 6, fontSize: 28, color: '#000', transform: 'rotate(45deg)' }} />
+        <GitHubIcon
+          sx={{
+            position: "absolute",
+            top: 6,
+            right: 6,
+            fontSize: 28,
+            color: "#000",
+            transform: "rotate(45deg)",
+          }}
+        />
       </Box>
-    <Box
-      onDrop={handleDrop}
-      onDragOver={handleDragOver}
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100%',
-        gap: 3,
-        border: '2px dashed',
-        borderColor: 'primary.main',
-        borderRadius: 2,
-        cursor: 'pointer',
-        '&:hover': { borderColor: 'primary.light', bgcolor: 'action.hover' },
-      }}
-      onClick={() => inputRef.current?.click()}
-    >
-      <Typography variant="h2" component="div" sx={{ fontWeight: 700, letterSpacing: 0, userSelect: 'none' }}>
-        Cast<Box component="span" sx={{ opacity: 0.45, fontWeight: 400 }}>/edit/</Box>or
-      </Typography>
-      <UploadFileIcon sx={{ fontSize: 64, color: 'primary.main' }} />
-      <Typography variant="h5" component="h1">
-        Drop a <code>.cast</code> file here
-      </Typography>
-      <Typography variant="body2" color="text.secondary">
-        or click to browse
-      </Typography>
-      <Button variant="outlined" onClick={e => { e.stopPropagation(); inputRef.current?.click(); }}>
-        Open File
-      </Button>
-      <Typography variant="body2" color="text.secondary">or</Typography>
-      <Button variant="outlined" onClick={loadSample} disabled={loadingSample}>
-        {loadingSample ? 'Loading…' : 'Load Sample'}
-      </Button>
-      <input
-        ref={inputRef}
-        type="file"
-        accept=".cast"
-        hidden
-        onChange={handleFileChange}
-      />
-    </Box>
+      <Box
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100%",
+          gap: 3,
+          border: "2px dashed",
+          borderColor: "primary.main",
+          borderRadius: 2,
+          cursor: "pointer",
+          "&:hover": { borderColor: "primary.light", bgcolor: "action.hover" },
+        }}
+        onClick={() => inputRef.current?.click()}
+      >
+        <Typography
+          variant="h2"
+          component="div"
+          sx={{ fontWeight: 700, letterSpacing: 0, userSelect: "none" }}
+        >
+          Cast
+          <Box component="span" sx={{ opacity: 0.45, fontWeight: 400 }}>
+            /edit/
+          </Box>
+          or
+        </Typography>
+        <UploadFileIcon sx={{ fontSize: 64, color: "primary.main" }} />
+        <Typography variant="h5" component="h1">
+          Drop a <code>.cast</code> file here
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          or click to browse
+        </Typography>
+        <Button
+          variant="outlined"
+          onClick={(e) => {
+            e.stopPropagation();
+            inputRef.current?.click();
+          }}
+        >
+          Open File
+        </Button>
+        <Typography variant="body2" color="text.secondary">
+          or
+        </Typography>
+        <Button
+          variant="outlined"
+          onClick={loadSample}
+          disabled={loadingSample}
+        >
+          {loadingSample ? "Loading…" : "Load Sample"}
+        </Button>
+        <input
+          ref={inputRef}
+          type="file"
+          accept=".cast"
+          hidden
+          onChange={handleFileChange}
+        />
+        <Typography variant="body2" color="text.secondary">
+          create your own with
+        </Typography>
+        <Typography
+          component="a"
+          href="https://docs.asciinema.org/getting-started/"
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="body2"
+          color="text.secondary"
+          onClick={(e) => e.stopPropagation()}
+          sx={{ fontFamily: "monospace", userSelect: "all" }}
+        >
+          asciinema record --output-format asciicast-v2 --stdin my_nice.cast
+        </Typography>
+      </Box>
     </Box>
   );
 }

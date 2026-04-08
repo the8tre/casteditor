@@ -3,6 +3,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import ToggleButton from '@mui/material/ToggleButton';
 import { useEditor } from '../../state/documentStore';
 import { countMatches } from '../../transforms/replaceText';
 import { getPanelColor } from '../../theme/panelColors';
@@ -11,10 +13,11 @@ export default function ReplaceTextPanel() {
   const { state, dispatch } = useEditor();
   const [search, setSearch] = useState('');
   const [replacement, setReplacement] = useState('');
+  const [glob, setGlob] = useState(false);
 
   const matchCount = useMemo(
-    () => (state.document && search ? countMatches(state.document, search) : 0),
-    [state.document, search],
+    () => (state.document && search ? countMatches(state.document, search, glob) : 0),
+    [state.document, search, glob],
   );
 
   const canApply = search.length > 0 && matchCount > 0;
@@ -31,6 +34,17 @@ export default function ReplaceTextPanel() {
         onChange={e => setSearch(e.target.value)}
         sx={{ width: 200 }}
       />
+      <Tooltip title="Enable glob patterns (* and ?)">
+        <ToggleButton
+          value="glob"
+          selected={glob}
+          onChange={() => setGlob(g => !g)}
+          size="small"
+          sx={{ px: 1, fontFamily: 'monospace', fontSize: '0.75rem' }}
+        >
+          *?
+        </ToggleButton>
+      </Tooltip>
       <TextField
         label="Replace with"
         size="small"
@@ -45,7 +59,7 @@ export default function ReplaceTextPanel() {
         variant="contained"
         size="small"
         disabled={!canApply}
-        onClick={() => dispatch({ type: 'APPLY_REPLACE_TEXT', payload: { search, replacement } })}
+        onClick={() => dispatch({ type: 'APPLY_REPLACE_TEXT', payload: { search, replacement, glob } })}
         sx={{ bgcolor: `rgb(${getPanelColor('replaceText').r},${getPanelColor('replaceText').g},${getPanelColor('replaceText').b})`, '&:hover': { bgcolor: `rgba(${getPanelColor('replaceText').r},${getPanelColor('replaceText').g},${getPanelColor('replaceText').b},0.85)` } }}
       >
         Apply

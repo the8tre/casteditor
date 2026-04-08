@@ -12,7 +12,7 @@ export type Action =
   | { type: 'APPLY_ADD_IDLE'; payload: { atTime: number; duration: number } }
   | { type: 'APPLY_RESIZE'; payload: { width: number; height: number } }
   | { type: 'APPLY_NORMALIZE_INPUT'; payload: { interval: number } }
-  | { type: 'APPLY_REPLACE_TEXT'; payload: { search: string; replacement: string } }
+  | { type: 'APPLY_REPLACE_TEXT'; payload: { search: string; replacement: string; glob: boolean } }
   | { type: 'UNDO' }
   | { type: 'REDO' };
 

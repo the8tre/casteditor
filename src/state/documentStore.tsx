@@ -127,7 +127,7 @@ function reducer(state: EditorState, action: Action): EditorState {
 
     case 'APPLY_REPLACE_TEXT': {
       if (!state.document) return state;
-      const newDoc = applyReplaceText(state.document, action.payload.search, action.payload.replacement);
+      const newDoc = applyReplaceText(state.document, action.payload.search, action.payload.replacement, action.payload.glob);
       return {
         ...state,
         document: newDoc,
