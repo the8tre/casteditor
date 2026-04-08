@@ -10,7 +10,7 @@ export function applyNormalizeInput(doc: CastDocument, interval: number): CastDo
   const result: CastEvent[] = [];
 
   let drift = 0;
-  let segmentAnchorTime = 0;  // original time of first 'i' in current segment
+  let segmentAnchorTime = 0;  // shifted time of first 'i' in current segment
   let segmentPos = 0;          // how many 'i' events processed in current segment (0 = anchor)
   let inSegment = false;
 
@@ -24,12 +24,11 @@ export function applyNormalizeInput(doc: CastDocument, interval: number): CastDo
 
     // 'i' event
     if (!inSegment) {
-      // First 'i' event in new segment — anchor, drift stays 0 for this event
-      segmentAnchorTime = ev.time;
+      // First 'i' event in new segment — anchor here, drift unchanged
+      segmentAnchorTime = ev.time + drift;
       segmentPos = 0;
       inSegment = true;
-      drift = 0;
-      result.push({ ...ev });  // unchanged
+      result.push({ ...ev, time: Math.max(0, Math.round((ev.time + drift) * 1000) / 1000) });
     } else {
       // Subsequent 'i' event in segment
       segmentPos += 1;
@@ -45,5 +44,5 @@ export function applyNormalizeInput(doc: CastDocument, interval: number): CastDo
     }
   }
 
-  return { ...doc, events: result };
+  return { ...doc, events: result.slice().sort((a, b) => a.time - b.time) };
 }
