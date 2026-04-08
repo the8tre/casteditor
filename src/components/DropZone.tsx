@@ -122,6 +122,21 @@ export default function DropZone() {
           </Box>
           or
         </Typography>
+        <Typography variant="body2" color="text.secondary">
+          create your cast with
+        </Typography>
+        <Typography
+          component="a"
+          href="https://docs.asciinema.org/getting-started/"
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="body2"
+          color="text.secondary"
+          onClick={(e) => e.stopPropagation()}
+          sx={{ fontFamily: "monospace", userSelect: "all" }}
+        >
+          asciinema record --output-format asciicast-v2 --stdin my_nice.cast
+        </Typography>
         <UploadFileIcon sx={{ fontSize: 64, color: "primary.main" }} />
         <Typography variant="h5" component="h1">
           Drop a <code>.cast</code> file here
@@ -155,21 +170,6 @@ export default function DropZone() {
           hidden
           onChange={handleFileChange}
         />
-        <Typography variant="body2" color="text.secondary">
-          create your own with
-        </Typography>
-        <Typography
-          component="a"
-          href="https://docs.asciinema.org/getting-started/"
-          target="_blank"
-          rel="noopener noreferrer"
-          variant="body2"
-          color="text.secondary"
-          onClick={(e) => e.stopPropagation()}
-          sx={{ fontFamily: "monospace", userSelect: "all" }}
-        >
-          asciinema record --output-format asciicast-v2 --stdin my_nice.cast
-        </Typography>
       </Box>
     </Box>
   );
