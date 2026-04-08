@@ -105,7 +105,7 @@ function reducer(state: EditorState, action: Action): EditorState {
 
     case 'APPLY_RESIZE': {
       if (!state.document) return state;
-      const newDoc = applyResize(state.document, action.payload.width, action.payload.height);
+      const newDoc = applyResize(state.document, action.payload.width, action.payload.height, action.payload.truncate);
       return {
         ...state,
         document: newDoc,
