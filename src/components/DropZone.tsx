@@ -7,7 +7,6 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import { useFileLoader } from '../hooks/useFileLoader';
 import { parseCast } from '../parser/castParser';
 import { useEditor } from '../state/documentStore';
-import { Code } from '@mui/icons-material';
 
 const SAMPLE_URL = "https://asciinema.org/a/335480.cast";
 
