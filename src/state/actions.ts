@@ -14,7 +14,8 @@ export type Action =
   | { type: 'APPLY_NORMALIZE_INPUT'; payload: { interval: number } }
   | { type: 'APPLY_REPLACE_TEXT'; payload: { search: string; replacement: string; glob: boolean } }
   | { type: 'UNDO' }
-  | { type: 'REDO' };
+  | { type: 'REDO' }
+  | { type: 'CLOSE_FILE' };
 
 export const loadFile = (document: CastDocument, filename: string): Action =>
   ({ type: 'LOAD_FILE', payload: { document, filename } });

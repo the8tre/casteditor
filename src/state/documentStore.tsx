@@ -158,6 +158,9 @@ function reducer(state: EditorState, action: Action): EditorState {
       };
     }
 
+    case 'CLOSE_FILE':
+      return initialState;
+
     default:
       return state;
   }
