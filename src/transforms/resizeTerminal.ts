@@ -45,14 +45,16 @@ function truncateChunk(
     // Visible character
     if (col < maxCols) {
       if (col === maxCols - 1) {
-        // Peek ahead within this chunk for more visible chars
+        // Peek ahead within this chunk for more non-space visible chars
         let hasMore = false;
         let peek = pos + 1;
         while (peek < data.length) {
           const pm = ANSI_RE.exec(data.slice(peek));
           if (pm !== null) { peek += pm[0].length; continue; }
-          if (data[peek] !== '\r' && data[peek] !== '\n') hasMore = true;
-          break;
+          const nc = data[peek];
+          if (nc !== '\r' && nc !== '\n' && nc !== ' ') { hasMore = true; break; }
+          if (nc === '\r' || nc === '\n') break;
+          peek++; // skip space, keep looking
         }
         if (hasMore && !truncatedLine) { out += '…'; truncatedLine = true; }
         else { out += ch; }
