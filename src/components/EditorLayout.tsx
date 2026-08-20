@@ -17,6 +17,8 @@ import NormalizeInputPanel from './panels/NormalizeInputPanel';
 import ResizePanel from './panels/ResizePanel';
 import ReplaceTextPanel from './panels/ReplaceTextPanel';
 import InfoPanel from './panels/InfoPanel';
+import { useLocalStorage } from '../hooks/useLocalStorage';
+import type { ThemeName } from '../theme/terminalThemes';
 
 const GLOBAL_PANELS = new Set(['resize', 'replaceText', 'info']);
 
@@ -24,6 +26,7 @@ export default function EditorLayout() {
   const { state, dispatch } = useEditor();
   const { document, selection, playhead, activePanel } = state;
   const playerRef = useRef<PlayerBridgeHandle>(null);
+  const [theme, setTheme] = useLocalStorage<ThemeName>('player.theme', 'asciinema');
 
   if (!document) return null;
 
@@ -87,10 +90,10 @@ export default function EditorLayout() {
         <GitHubIcon sx={{ position: 'absolute', top: 6, right: 6, fontSize: 28, color: '#000', transform: 'rotate(45deg)' }} />
       </Box>
 
-      <MainToolbar />
+      <MainToolbar theme={theme} onThemeChange={setTheme} />
 
       <Box sx={{ flex: '1 1 0', minHeight: 0, overflow: 'hidden', p: 1 }}>
-        <PlayerBridge ref={playerRef} document={document} onTimeUpdate={handleTimeUpdate} />
+        <PlayerBridge ref={playerRef} document={document} theme={theme} onTimeUpdate={handleTimeUpdate} />
       </Box>
 
       <Box sx={{ flex: '0 0 auto', mx: 1 }}>

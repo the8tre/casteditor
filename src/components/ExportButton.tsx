@@ -17,6 +17,8 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useEditor } from '../state/documentStore';
 import { serializeCast } from '../serializer/castSerializer';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import { svgTermThemes } from '../theme/terminalThemes';
+import type { ThemeName } from '../theme/terminalThemes';
 
 function triggerDownload(content: string, filename: string, mimeType: string) {
   const blob = new Blob([content], { type: mimeType });
@@ -28,7 +30,11 @@ function triggerDownload(content: string, filename: string, mimeType: string) {
   URL.revokeObjectURL(url);
 }
 
-export default function ExportButton() {
+interface ExportButtonProps {
+  theme: ThemeName;
+}
+
+export default function ExportButton({ theme }: ExportButtonProps) {
   const { state } = useEditor();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLDivElement>(null);
@@ -47,10 +53,10 @@ export default function ExportButton() {
     setSvgDialogOpen(false);
     const castText = serializeCast(state.document);
     const { render } = await import('svg-term');
-    const svg = render(castText, { window: svgWindow, paddingX: 2, paddingY: 1, cursor: svgCursor });
+    const svg = render(castText, { window: svgWindow, paddingX: 2, paddingY: 1, cursor: svgCursor, theme: svgTermThemes[theme] });
     const basename = state.filename?.replace(/\.cast$/, '') ?? 'recording';
     triggerDownload(svg, `${basename}.svg`, 'image/svg+xml');
-  }, [state.document, state.filename, svgWindow, svgCursor]);
+  }, [state.document, state.filename, svgWindow, svgCursor, theme]);
 
   return (
     <>

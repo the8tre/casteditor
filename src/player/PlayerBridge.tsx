@@ -11,11 +11,12 @@ export interface PlayerBridgeHandle {
 
 interface PlayerBridgeProps {
   document: CastDocument;
+  theme?: string;
   onTimeUpdate?: (time: number) => void;
 }
 
 const PlayerBridge = forwardRef<PlayerBridgeHandle, PlayerBridgeProps>(
-function PlayerBridge({ document, onTimeUpdate }, ref) {
+function PlayerBridge({ document, theme = 'asciinema', onTimeUpdate }, ref) {
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<PlayerInstance | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -50,7 +51,7 @@ function PlayerBridge({ document, onTimeUpdate }, ref) {
         playerRef.current = AsciinemaPlayer.create(
           { data: castText },
           containerRef.current,
-          { startAt, fit: 'height', theme: 'monokai' }
+          { startAt, fit: 'height', theme }
         );
       }
     };
@@ -62,7 +63,7 @@ function PlayerBridge({ document, onTimeUpdate }, ref) {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [document]);
+  }, [document, theme]);
 
   // Poll time — getCurrentTime() returns a Promise<number>
   useEffect(() => {

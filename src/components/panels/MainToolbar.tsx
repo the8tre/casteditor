@@ -13,12 +13,21 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 import { useRef, useState } from 'react';
 import { useEditor } from '../../state/documentStore';
 import { useFileLoader } from '../../hooks/useFileLoader';
 import ExportButton from '../ExportButton';
+import { THEME_NAMES } from '../../theme/terminalThemes';
+import type { ThemeName } from '../../theme/terminalThemes';
 
-export default function MainToolbar() {
+interface MainToolbarProps {
+  theme: ThemeName;
+  onThemeChange: (theme: ThemeName) => void;
+}
+
+export default function MainToolbar({ theme, onThemeChange }: MainToolbarProps) {
   const { state, dispatch } = useEditor();
   const { loadFile } = useFileLoader();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -93,7 +102,18 @@ export default function MainToolbar() {
             </span>
           </Tooltip>
 
-          <ExportButton />
+          <Select
+            size="small"
+            value={theme}
+            onChange={e => onThemeChange(e.target.value as ThemeName)}
+            sx={{ fontSize: '0.75rem', height: 30, minWidth: 110 }}
+          >
+            {THEME_NAMES.map(name => (
+              <MenuItem key={name} value={name} dense sx={{ fontSize: '0.75rem' }}>{name}</MenuItem>
+            ))}
+          </Select>
+
+          <ExportButton theme={theme} />
         </Box>
 
         <input
