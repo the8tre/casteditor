@@ -8,6 +8,7 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CheckIcon from '@mui/icons-material/Check';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { useFileLoader } from '../hooks/useFileLoader';
 import { parseCast } from '../parser/castParser';
 import { useEditor } from '../state/documentStore';
@@ -140,30 +141,6 @@ export default function DropZone() {
             v{__APP_VERSION__}
           </Typography>
         </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.5 }}>
-          <Typography variant="body2" color="text.secondary">
-            create your cast with
-          </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <Typography
-              component="a"
-              href="https://docs.asciinema.org/getting-started/"
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="body2"
-              color="text.secondary"
-              onClick={(e) => e.stopPropagation()}
-              sx={{ fontFamily: "monospace", userSelect: "all" }}
-            >
-              {ASCIINEMA_CMD}
-            </Typography>
-            <Tooltip title={copied ? "Copied!" : "Copy"} placement="top">
-              <IconButton size="small" onClick={handleCopy} sx={{ color: 'text.secondary' }}>
-                {copied ? <CheckIcon fontSize="small" /> : <ContentCopyIcon fontSize="small" />}
-              </IconButton>
-            </Tooltip>
-          </Box>
-        </Box>
         <UploadFileIcon sx={{ fontSize: 64, color: "primary.main" }} />
         <Typography variant="h5" component="h1">
           Drop a <code>.cast</code> file here
@@ -190,6 +167,54 @@ export default function DropZone() {
         >
           {loadingSample ? "Loading…" : "Load Sample"}
         </Button>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+          or
+        </Typography>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, border: '1px solid', borderColor: 'divider', borderRadius: 1, px: 2, py: 1.5 }}>
+          <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600 }}>
+            Create your own cast
+          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75, alignItems: 'flex-start' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Typography variant="body2" color="text.secondary">1.</Typography>
+              <Typography
+                component="a"
+                href="https://docs.asciinema.org/manual/cli/installation/"
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="body2"
+                color="text.secondary"
+                onClick={(e) => e.stopPropagation()}
+                sx={{ display: 'flex', alignItems: 'center', gap: 0.75, textDecoration: 'underline' }}
+              >
+                Install
+                <Box
+                  component="img"
+                  src="/casteditor/asciinema-logo.svg"
+                  alt="asciinema"
+                  sx={{ height: 16, width: 'auto', opacity: 0.7 }}
+                />
+                asciinema
+                <OpenInNewIcon sx={{ fontSize: 14, opacity: 0.7 }} />
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Typography variant="body2" color="text.secondary">2.</Typography>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ fontFamily: "monospace", userSelect: "all" }}
+              >
+                Run: {ASCIINEMA_CMD}
+              </Typography>
+              <Tooltip title={copied ? "Copied!" : "Copy"} placement="top">
+                <IconButton size="small" onClick={handleCopy} sx={{ color: 'text.secondary' }}>
+                  {copied ? <CheckIcon fontSize="small" /> : <ContentCopyIcon fontSize="small" />}
+                </IconButton>
+              </Tooltip>
+            </Box>
+          </Box>
+        </Box>
         <input
           ref={inputRef}
           type="file"

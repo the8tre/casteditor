@@ -1,5 +1,5 @@
 # Cast/edit/or
-![version](https://img.shields.io/badge/version-2.1.0-orange.svg?style=for-the-badge)
+![version](https://img.shields.io/badge/version-2.1.1-orange.svg?style=for-the-badge)
 
 A browser-based editor for [asciinema](https://asciinema.org/) recordings (`.cast` files).
 100% client-side — no server, no uploads, your files never leave the browser.
