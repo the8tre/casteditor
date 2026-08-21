@@ -13,6 +13,7 @@ export type Action =
   | { type: 'APPLY_RESIZE'; payload: { width: number; height: number; truncate: boolean } }
   | { type: 'APPLY_NORMALIZE_INPUT'; payload: { interval: number } }
   | { type: 'APPLY_REPLACE_TEXT'; payload: { search: string; replacement: string; glob: boolean } }
+  | { type: 'APPLY_THEME'; payload: { theme: string } }
   | { type: 'UNDO' }
   | { type: 'REDO' }
   | { type: 'CLOSE_FILE' };

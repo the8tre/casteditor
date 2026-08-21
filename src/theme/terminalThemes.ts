@@ -1,3 +1,5 @@
+import type { CastTheme } from '../types/asciicast';
+
 type RGB = [number, number, number];
 
 export interface SvgTermTheme {
@@ -16,6 +18,10 @@ export interface SvgTermTheme {
 
 export const THEME_NAMES = [
   'asciinema',
+  'catppuccin-latte',
+  'catppuccin-frappe',
+  'catppuccin-macchiato',
+  'catppuccin-mocha',
   'dracula',
   'gruvbox-dark',
   'monokai',
@@ -26,6 +32,56 @@ export const THEME_NAMES = [
 ] as const;
 
 export type ThemeName = typeof THEME_NAMES[number];
+
+const BUILTIN_PLAYER_THEMES = new Set([
+  'asciinema', 'dracula', 'gruvbox-dark', 'monokai',
+  'nord', 'solarized-dark', 'solarized-light', 'tango',
+]);
+
+function cssTheme(name: string, bg: string, fg: string, palette: string): string {
+  const colors = palette.split(':');
+  const vars = colors.map((c, i) => `  --term-color-${i}: ${c};`).join('\n');
+  return `.asciinema-player-theme-${name} {\n  --term-color-background: ${bg};\n  --term-color-foreground: ${fg};\n${vars}\n}`;
+}
+
+const CUSTOM_PLAYER_CSS: Partial<Record<ThemeName, string>> = {
+  'catppuccin-latte': cssTheme('catppuccin-latte', '#eff1f5', '#4c4f69',
+    '#5c5f77:#d20f39:#40a02b:#df8e1d:#1e66f5:#ea76cb:#179299:#acb0be:#6c6f85:#d20f39:#40a02b:#df8e1d:#1e66f5:#ea76cb:#179299:#bcc0cc'),
+  'catppuccin-frappe': cssTheme('catppuccin-frappe', '#303446', '#c6d0f5',
+    '#51576d:#e78284:#a6d189:#e5c890:#8caaee:#f4b8e4:#81c8be:#b5bfe2:#626880:#e78284:#a6d189:#e5c890:#8caaee:#f4b8e4:#81c8be:#a5adce'),
+  'catppuccin-macchiato': cssTheme('catppuccin-macchiato', '#24273a', '#cad3f5',
+    '#494d64:#ed8796:#a6da95:#eed49f:#8aadf4:#f5bde6:#8bd5ca:#b8c0e0:#5b6078:#ed8796:#a6da95:#eed49f:#8aadf4:#f5bde6:#8bd5ca:#a5adcb'),
+  'catppuccin-mocha': cssTheme('catppuccin-mocha', '#1e1e2e', '#cdd6f4',
+    '#45475a:#f38ba8:#a6e3a1:#f9e2af:#89b4fa:#f5c2e7:#94e2d5:#bac2de:#585b70:#f38ba8:#a6e3a1:#f9e2af:#89b4fa:#f5c2e7:#94e2d5:#a6adc8'),
+};
+
+export function ensurePlayerTheme(name: string, castTheme?: CastTheme): string {
+  if (name === 'default') {
+    if (!castTheme) return 'asciinema';
+    const id = 'player-theme-custom-cast';
+    const existing = document.getElementById(id);
+    const css = cssTheme('custom-cast', castTheme.bg, castTheme.fg, castTheme.palette);
+    if (existing) {
+      existing.textContent = css;
+    } else {
+      const style = document.createElement('style');
+      style.id = id;
+      style.textContent = css;
+      document.head.appendChild(style);
+    }
+    return 'custom-cast';
+  }
+  if (BUILTIN_PLAYER_THEMES.has(name)) return name;
+  const id = `player-theme-${name}`;
+  if (document.getElementById(id)) return name;
+  const css = CUSTOM_PLAYER_CSS[name as ThemeName];
+  if (!css) return name;
+  const style = document.createElement('style');
+  style.id = id;
+  style.textContent = css;
+  document.head.appendChild(style);
+  return name;
+}
 
 function hex(h: string): RGB {
   const n = parseInt(h.slice(1), 16);
@@ -61,6 +117,38 @@ export const svgTermThemes: Record<ThemeName, SvgTermTheme> = {
     '#26b0d7', '#b954e1', '#54e1b9', '#d9d9d9',
     '#4d4d4d', '#dd3c69', '#4ebf22', '#ddaf3c',
     '#26b0d7', '#b954e1', '#54e1b9', '#ffffff',
+  ),
+
+  'catppuccin-latte': theme(
+    '#eff1f5', '#4c4f69',
+    '#5c5f77', '#d20f39', '#40a02b', '#df8e1d',
+    '#1e66f5', '#ea76cb', '#179299', '#acb0be',
+    '#6c6f85', '#d20f39', '#40a02b', '#df8e1d',
+    '#1e66f5', '#ea76cb', '#179299', '#bcc0cc',
+  ),
+
+  'catppuccin-frappe': theme(
+    '#303446', '#c6d0f5',
+    '#51576d', '#e78284', '#a6d189', '#e5c890',
+    '#8caaee', '#f4b8e4', '#81c8be', '#b5bfe2',
+    '#626880', '#e78284', '#a6d189', '#e5c890',
+    '#8caaee', '#f4b8e4', '#81c8be', '#a5adce',
+  ),
+
+  'catppuccin-macchiato': theme(
+    '#24273a', '#cad3f5',
+    '#494d64', '#ed8796', '#a6da95', '#eed49f',
+    '#8aadf4', '#f5bde6', '#8bd5ca', '#b8c0e0',
+    '#5b6078', '#ed8796', '#a6da95', '#eed49f',
+    '#8aadf4', '#f5bde6', '#8bd5ca', '#a5adcb',
+  ),
+
+  'catppuccin-mocha': theme(
+    '#1e1e2e', '#cdd6f4',
+    '#45475a', '#f38ba8', '#a6e3a1', '#f9e2af',
+    '#89b4fa', '#f5c2e7', '#94e2d5', '#bac2de',
+    '#585b70', '#f38ba8', '#a6e3a1', '#f9e2af',
+    '#89b4fa', '#f5c2e7', '#94e2d5', '#a6adc8',
   ),
 
   dracula: theme(
@@ -119,3 +207,47 @@ export const svgTermThemes: Record<ThemeName, SvgTermTheme> = {
     '#729fcf', '#ad7fa8', '#34e2e2', '#eeeeec',
   ),
 };
+
+function rgbToHex(rgb: RGB): string {
+  return '#' + rgb.map(v => v.toString(16).padStart(2, '0')).join('');
+}
+
+export function themeToHeader(name: string): CastTheme {
+  const t = svgTermThemes[name as ThemeName] ?? svgTermThemes['asciinema'];
+  const palette = Array.from({ length: 16 }, (_, i) => rgbToHex(t[i as keyof typeof t] as RGB)).join(':');
+  return { fg: rgbToHex(t.text), bg: rgbToHex(t.background), palette };
+}
+
+export function headerToThemeName(castTheme: CastTheme | undefined): string {
+  if (!castTheme) return 'default';
+  for (const name of THEME_NAMES) {
+    const h = themeToHeader(name);
+    if (h.fg === castTheme.fg && h.bg === castTheme.bg && h.palette === castTheme.palette) {
+      return name;
+    }
+  }
+  return 'default';
+}
+
+export function castThemeToSvgTerm(castTheme: CastTheme | undefined): SvgTermTheme {
+  if (!castTheme) return svgTermThemes['asciinema'];
+  const colors = castTheme.palette.split(':');
+  const toRgb = (h: string): RGB => { const n = parseInt(h.slice(1), 16); return [(n >> 16) & 0xff, (n >> 8) & 0xff, n & 0xff]; };
+  return {
+    0: toRgb(colors[0] ?? '#000000'), 1: toRgb(colors[1] ?? '#000000'),
+    2: toRgb(colors[2] ?? '#000000'), 3: toRgb(colors[3] ?? '#000000'),
+    4: toRgb(colors[4] ?? '#000000'), 5: toRgb(colors[5] ?? '#000000'),
+    6: toRgb(colors[6] ?? '#000000'), 7: toRgb(colors[7] ?? '#000000'),
+    8: toRgb(colors[8] ?? '#000000'), 9: toRgb(colors[9] ?? '#000000'),
+    10: toRgb(colors[10] ?? '#000000'), 11: toRgb(colors[11] ?? '#000000'),
+    12: toRgb(colors[12] ?? '#000000'), 13: toRgb(colors[13] ?? '#000000'),
+    14: toRgb(colors[14] ?? '#000000'), 15: toRgb(colors[15] ?? '#000000'),
+    background: toRgb(castTheme.bg),
+    text: toRgb(castTheme.fg),
+    bold: toRgb(castTheme.fg),
+    cursor: toRgb(castTheme.fg),
+    fontSize: 1.67,
+    lineHeight: 1.3,
+    fontFamily: 'Monaco, Consolas, Menlo, "Bitstream Vera Sans Mono", "PowerlineSymbols", monospace',
+  };
+}

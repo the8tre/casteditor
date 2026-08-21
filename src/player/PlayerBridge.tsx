@@ -2,6 +2,7 @@ import { useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
 import * as AsciinemaPlayer from 'asciinema-player';
 import { serializeCast } from '../serializer/castSerializer';
 import type { CastDocument } from '../types/asciicast';
+import { ensurePlayerTheme } from '../theme/terminalThemes';
 
 type PlayerInstance = ReturnType<typeof AsciinemaPlayer.create>;
 
@@ -16,7 +17,7 @@ interface PlayerBridgeProps {
 }
 
 const PlayerBridge = forwardRef<PlayerBridgeHandle, PlayerBridgeProps>(
-function PlayerBridge({ document, theme = 'asciinema', onTimeUpdate }, ref) {
+function PlayerBridge({ document, theme = 'default', onTimeUpdate }, ref) {
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<PlayerInstance | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -48,10 +49,13 @@ function PlayerBridge({ document, theme = 'asciinema', onTimeUpdate }, ref) {
       if (containerRef.current) {
         containerRef.current.innerHTML = '';
         const castText = serializeCast(document);
+        const resolvedTheme = ensurePlayerTheme(theme, document.header.theme);
         playerRef.current = AsciinemaPlayer.create(
           { data: castText },
           containerRef.current,
-          { startAt, fit: 'height', theme }
+          resolvedTheme !== 'asciinema' || theme !== 'default'
+            ? { startAt, fit: 'height', theme: resolvedTheme }
+            : { startAt, fit: 'height' }
         );
       }
     };

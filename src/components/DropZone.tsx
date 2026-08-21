@@ -2,19 +2,33 @@ import { useCallback, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import CheckIcon from '@mui/icons-material/Check';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { useFileLoader } from '../hooks/useFileLoader';
 import { parseCast } from '../parser/castParser';
 import { useEditor } from '../state/documentStore';
 
 const SAMPLE_URL = "https://asciinema.org/a/335480.cast";
+const ASCIINEMA_CMD = "asciinema record --output-format asciicast-v2 --stdin my_nice.cast";
 
 export default function DropZone() {
   const { loadFile } = useFileLoader();
   const { dispatch } = useEditor();
   const inputRef = useRef<HTMLInputElement>(null);
   const [loadingSample, setLoadingSample] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(ASCIINEMA_CMD).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
 
   const loadSample = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -121,21 +135,31 @@ export default function DropZone() {
           </Box>
           or
         </Typography>
+        <Typography variant="caption" color="text.disabled">
+          v{__APP_VERSION__}
+        </Typography>
         <Typography variant="body2" color="text.secondary">
           create your cast with
         </Typography>
-        <Typography
-          component="a"
-          href="https://docs.asciinema.org/getting-started/"
-          target="_blank"
-          rel="noopener noreferrer"
-          variant="body2"
-          color="text.secondary"
-          onClick={(e) => e.stopPropagation()}
-          sx={{ fontFamily: "monospace", userSelect: "all" }}
-        >
-          asciinema record --output-format asciicast-v2 --stdin my_nice.cast
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <Typography
+            component="a"
+            href="https://docs.asciinema.org/getting-started/"
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="body2"
+            color="text.secondary"
+            onClick={(e) => e.stopPropagation()}
+            sx={{ fontFamily: "monospace", userSelect: "all" }}
+          >
+            {ASCIINEMA_CMD}
+          </Typography>
+          <Tooltip title={copied ? "Copied!" : "Copy"} placement="top">
+            <IconButton size="small" onClick={handleCopy} sx={{ color: 'text.secondary' }}>
+              {copied ? <CheckIcon fontSize="small" /> : <ContentCopyIcon fontSize="small" />}
+            </IconButton>
+          </Tooltip>
+        </Box>
         <UploadFileIcon sx={{ fontSize: 64, color: "primary.main" }} />
         <Typography variant="h5" component="h1">
           Drop a <code>.cast</code> file here

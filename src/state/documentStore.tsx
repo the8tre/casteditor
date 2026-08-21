@@ -9,6 +9,7 @@ import { applyResize } from '../transforms/resizeTerminal';
 import { applyNormalizeInput } from '../transforms/normalizeInput';
 import { applyReplaceText } from '../transforms/replaceText';
 import { addIdle } from '../transforms/addIdle';
+import { headerToThemeName, themeToHeader } from '../theme/terminalThemes';
 
 const MAX_UNDO = 50;
 
@@ -18,6 +19,7 @@ const initialState: EditorState = {
   selection: null,
   playhead: 0,
   activePanel: null,
+  activeTheme: 'default',
   past: [],
   future: [],
 };
@@ -35,6 +37,7 @@ function reducer(state: EditorState, action: Action): EditorState {
         document: action.payload.document,
         filename: action.payload.filename,
         activePanel: 'info',
+        activeTheme: headerToThemeName(action.payload.document.header.theme),
       };
 
     case 'SET_SELECTION':
@@ -136,12 +139,29 @@ function reducer(state: EditorState, action: Action): EditorState {
       };
     }
 
+    case 'APPLY_THEME': {
+      if (!state.document) return state;
+      const themeName = action.payload.theme;
+      const newHeader = themeName === 'default'
+        ? (({ theme: _t, ...rest }) => rest)(state.document.header)
+        : { ...state.document.header, theme: themeToHeader(themeName) };
+      const newDoc = { ...state.document, header: newHeader };
+      return {
+        ...state,
+        document: newDoc,
+        activeTheme: themeName,
+        past: pushUndo(state.past, state.document),
+        future: [],
+      };
+    }
+
     case 'UNDO': {
       if (state.past.length === 0 || !state.document) return state;
       const prev = state.past[state.past.length - 1];
       return {
         ...state,
         document: prev,
+        activeTheme: headerToThemeName(prev.header.theme),
         past: state.past.slice(0, -1),
         future: [state.document, ...state.future],
       };
@@ -153,6 +173,7 @@ function reducer(state: EditorState, action: Action): EditorState {
       return {
         ...state,
         document: next,
+        activeTheme: headerToThemeName(next.header.theme),
         past: pushUndo(state.past, state.document),
         future: state.future.slice(1),
       };
