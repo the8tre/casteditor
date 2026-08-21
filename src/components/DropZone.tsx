@@ -4,6 +4,8 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CheckIcon from '@mui/icons-material/Check';
@@ -17,11 +19,12 @@ const SAMPLE_URL = "https://asciinema.org/a/335480.cast";
 const ASCIINEMA_CMD = "asciinema record --output-format asciicast-v2 --stdin my_nice.cast";
 
 export default function DropZone() {
-  const { loadFile } = useFileLoader();
+  const { loadFile, error, clearError } = useFileLoader();
   const { dispatch } = useEditor();
   const inputRef = useRef<HTMLInputElement>(null);
   const [loadingSample, setLoadingSample] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [sampleError, setSampleError] = useState<string | null>(null);
 
   const handleCopy = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -40,7 +43,7 @@ export default function DropZone() {
       const document = parseCast(text);
       dispatch({ type: 'LOAD_FILE', payload: { document, filename: 'sample.cast' } });
     } catch (err) {
-      alert(`Failed to load sample: ${err instanceof Error ? err.message : String(err)}`);
+      setSampleError(`Failed to load sample: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setLoadingSample(false);
     }
@@ -223,6 +226,12 @@ export default function DropZone() {
           onChange={handleFileChange}
         />
       </Box>
+      <Snackbar open={!!error} autoHideDuration={6000} onClose={clearError} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+        <Alert severity="error" onClose={clearError}>{error}</Alert>
+      </Snackbar>
+      <Snackbar open={!!sampleError} autoHideDuration={6000} onClose={() => setSampleError(null)} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+        <Alert severity="error" onClose={() => setSampleError(null)}>{sampleError}</Alert>
+      </Snackbar>
     </Box>
   );
 }

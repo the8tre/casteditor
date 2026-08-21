@@ -1,4 +1,5 @@
 import type { CastDocument, TimeRange } from '../types/asciicast';
+import { recalcDuration } from './utils';
 
 const r3 = (n: number) => Math.round(n * 1000) / 1000;
 
@@ -6,7 +7,7 @@ export function applySpeed(doc: CastDocument, multiplier: number, range?: TimeRa
   if (!range) {
     // Global speed change
     const events = doc.events.map(e => ({ ...e, time: r3(e.time / multiplier) }));
-    return { header: { ...doc.header }, events };
+    return recalcDuration({ header: { ...doc.header }, events });
   }
 
   // Per-range: rescale inside [range.start, range.end], shift after by delta
@@ -23,5 +24,5 @@ export function applySpeed(doc: CastDocument, multiplier: number, range?: TimeRa
     return { ...e, time: r3(e.time + delta) };
   });
 
-  return { header: { ...doc.header }, events };
+  return recalcDuration({ header: { ...doc.header }, events });
 }

@@ -142,8 +142,9 @@ function reducer(state: EditorState, action: Action): EditorState {
     case 'APPLY_THEME': {
       if (!state.document) return state;
       const themeName = action.payload.theme;
+      const { theme: _t, ...headerWithoutTheme } = state.document.header;
       const newHeader = themeName === 'default'
-        ? (({ theme: _t, ...rest }) => rest)(state.document.header)
+        ? headerWithoutTheme
         : { ...state.document.header, theme: themeToHeader(themeName) };
       const newDoc = { ...state.document, header: newHeader };
       return {
@@ -199,7 +200,7 @@ export function EditorProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+      const isMac = ((navigator as Navigator & { userAgentData?: { platform: string } }).userAgentData?.platform ?? navigator.platform).toUpperCase().includes('MAC');
       const mod = isMac ? e.metaKey : e.ctrlKey;
       if (!mod) return;
       if (e.key === 'z' && !e.shiftKey) {

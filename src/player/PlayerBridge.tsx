@@ -66,7 +66,7 @@ function PlayerBridge({ document, theme = 'default', onTimeUpdate }, ref) {
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- onTimeUpdate intentionally omitted: stored in ref to avoid player recreation on each render
   }, [document, theme]);
 
   // Poll time — getCurrentTime() returns a Promise<number>

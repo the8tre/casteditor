@@ -1,4 +1,5 @@
 import type { CastDocument, TimeRange } from '../types/asciicast';
+import { recalcDuration } from './utils';
 
 const r3 = (n: number) => Math.round(n * 1000) / 1000;
 
@@ -13,5 +14,5 @@ export function applyCut(doc: CastDocument, range: TimeRange): CastDocument {
       return e;
     });
 
-  return { header: { ...doc.header }, events };
+  return recalcDuration({ header: { ...doc.header }, events });
 }

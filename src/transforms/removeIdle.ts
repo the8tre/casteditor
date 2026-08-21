@@ -1,4 +1,5 @@
 import type { CastDocument } from '../types/asciicast';
+import { recalcDuration } from './utils';
 
 const r3 = (n: number) => Math.round(n * 1000) / 1000;
 
@@ -23,5 +24,5 @@ export function applyRemoveIdle(doc: CastDocument, threshold: number): CastDocum
   // Fix first event (should stay at its original time, adjusted by any offset from before)
   events[0] = { ...events[0], time: r3(doc.events[0].time) };
 
-  return { header: { ...doc.header }, events };
+  return recalcDuration({ header: { ...doc.header }, events });
 }

@@ -13,6 +13,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 import { useRef, useState } from 'react';
 import { useEditor } from '../../state/documentStore';
 import { useFileLoader } from '../../hooks/useFileLoader';
@@ -21,7 +23,7 @@ import SnapshotButton from '../SnapshotButton';
 
 export default function MainToolbar() {
   const { state, dispatch } = useEditor();
-  const { loadFile } = useFileLoader();
+  const { loadFile, error, clearError } = useFileLoader();
   const inputRef = useRef<HTMLInputElement>(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
 
@@ -122,6 +124,10 @@ export default function MainToolbar() {
           <Button onClick={handleConfirm} color="error">Discard & go back</Button>
         </DialogActions>
       </Dialog>
+
+      <Snackbar open={!!error} autoHideDuration={6000} onClose={clearError} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+        <Alert severity="error" onClose={clearError}>{error}</Alert>
+      </Snackbar>
     </AppBar>
   );
 }

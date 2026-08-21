@@ -2,7 +2,7 @@ import type { CastDocument } from '../types/asciicast';
 
 export function serializeCast(doc: CastDocument): string {
   const lastEventTime = doc.events.length > 0
-    ? Math.max(...doc.events.map(e => e.time))
+    ? doc.events.reduce((max, e) => e.time > max ? e.time : max, 0)
     : 0;
 
   const header = { ...doc.header, duration: lastEventTime };
