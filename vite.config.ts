@@ -19,4 +19,8 @@ export default defineConfig({
       'buffer': resolve(__dirname, 'node_modules/buffer/index.js'),
     },
   },
+  test: {
+    environment: 'node',
+    globals: true,
+  },
 });
