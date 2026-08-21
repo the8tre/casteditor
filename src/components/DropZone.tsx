@@ -124,41 +124,45 @@ export default function DropZone() {
         }}
         onClick={() => inputRef.current?.click()}
       >
-        <Typography
-          variant="h2"
-          component="div"
-          sx={{ fontWeight: 700, letterSpacing: 0, userSelect: "none" }}
-        >
-          Cast
-          <Box component="span" sx={{ opacity: 0.45, fontWeight: 400 }}>
-            /edit/
-          </Box>
-          or
-        </Typography>
-        <Typography variant="caption" color="text.disabled">
-          v{__APP_VERSION__}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          create your cast with
-        </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.5 }}>
           <Typography
-            component="a"
-            href="https://docs.asciinema.org/getting-started/"
-            target="_blank"
-            rel="noopener noreferrer"
-            variant="body2"
-            color="text.secondary"
-            onClick={(e) => e.stopPropagation()}
-            sx={{ fontFamily: "monospace", userSelect: "all" }}
+            variant="h2"
+            component="div"
+            sx={{ fontWeight: 700, letterSpacing: 0, userSelect: "none" }}
           >
-            {ASCIINEMA_CMD}
+            Cast
+            <Box component="span" sx={{ opacity: 0.45, fontWeight: 400 }}>
+              /edit/
+            </Box>
+            or
           </Typography>
-          <Tooltip title={copied ? "Copied!" : "Copy"} placement="top">
-            <IconButton size="small" onClick={handleCopy} sx={{ color: 'text.secondary' }}>
-              {copied ? <CheckIcon fontSize="small" /> : <ContentCopyIcon fontSize="small" />}
-            </IconButton>
-          </Tooltip>
+          <Typography variant="caption" color="text.disabled">
+            v{__APP_VERSION__}
+          </Typography>
+        </Box>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.5 }}>
+          <Typography variant="body2" color="text.secondary">
+            create your cast with
+          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <Typography
+              component="a"
+              href="https://docs.asciinema.org/getting-started/"
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="body2"
+              color="text.secondary"
+              onClick={(e) => e.stopPropagation()}
+              sx={{ fontFamily: "monospace", userSelect: "all" }}
+            >
+              {ASCIINEMA_CMD}
+            </Typography>
+            <Tooltip title={copied ? "Copied!" : "Copy"} placement="top">
+              <IconButton size="small" onClick={handleCopy} sx={{ color: 'text.secondary' }}>
+                {copied ? <CheckIcon fontSize="small" /> : <ContentCopyIcon fontSize="small" />}
+              </IconButton>
+            </Tooltip>
+          </Box>
         </Box>
         <UploadFileIcon sx={{ fontSize: 64, color: "primary.main" }} />
         <Typography variant="h5" component="h1">

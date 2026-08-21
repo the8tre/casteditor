@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { useEditor } from '../../state/documentStore';
 import { THEME_NAMES, svgTermThemes, castThemeToSvgTerm } from '../../theme/terminalThemes';
@@ -11,28 +10,30 @@ import type { SvgTermTheme } from '../../theme/terminalThemes';
 
 type SelectionTheme = 'default' | typeof THEME_NAMES[number];
 
-function rgbToHex(rgb: [number, number, number]): string {
-  return '#' + rgb.map(v => v.toString(16).padStart(2, '0')).join('');
+function rgb(c: [number, number, number]): string {
+  return `rgb(${c[0]},${c[1]},${c[2]})`;
 }
 
-function Swatch({ color, title }: { color: string; title: string }) {
-  return (
-    <Tooltip title={title} placement="top">
-      <Box sx={{ width: 14, height: 14, bgcolor: color, border: '1px solid rgba(255,255,255,0.15)', flexShrink: 0 }} />
-    </Tooltip>
-  );
-}
+function TerminalPreview({ t }: { t: SvgTermTheme }) {
+  const W = 228, H = 50;
+  const bw = 22, bh = 13;
+  const padX = 6, padY = 5;
+  const gap = 2;
 
-function Swatches({ t }: { t: SvgTermTheme }) {
   return (
-    <Box sx={{ display: 'flex', gap: '2px', alignItems: 'center', flexWrap: 'nowrap' }}>
-      <Swatch color={rgbToHex(t.background)} title="bg" />
-      <Swatch color={rgbToHex(t.text)} title="fg" />
-      <Box sx={{ width: 4 }} />
-      {Array.from({ length: 16 }, (_, i) => (
-        <Swatch key={i} color={rgbToHex(t[i as keyof SvgTermTheme] as [number, number, number])} title={`color ${i}`} />
-      ))}
-    </Box>
+    <svg width={W} height={H} style={{ borderRadius: 4, flexShrink: 0, display: 'block' }}>
+      <rect width={W} height={H} fill={rgb(t.background)} rx={4} />
+      {Array.from({ length: 16 }, (_, i) => {
+        const col = i % 8;
+        const row = Math.floor(i / 8);
+        const x = padX + col * (bw + gap);
+        const y = padY + row * (bh + gap);
+        return <rect key={i} x={x} y={y} width={bw} height={bh} fill={rgb(t[i as 0])} />;
+      })}
+      <text x={padX} y={H - 6} fill={rgb(t.text)} fontSize={8} fontFamily="monospace">
+        {`bg:${rgb(t.background)}  fg:${rgb(t.text)}`}
+      </text>
+    </svg>
   );
 }
 
@@ -70,7 +71,7 @@ export default function ThemePanel() {
       </Select>
 
       {previewTheme ? (
-        <Swatches t={previewTheme} />
+        <TerminalPreview t={previewTheme} />
       ) : (
         <Typography variant="caption" color="text.disabled" sx={{ fontStyle: 'italic' }}>
           no colors in cast
@@ -89,3 +90,4 @@ export default function ThemePanel() {
     </Box>
   );
 }
+
