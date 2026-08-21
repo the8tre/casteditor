@@ -15,8 +15,10 @@ Give a try to the live app here: https://the8tre.github.io/casteditor/
 - **Normalize Input** — even out keystroke timing (recorded with `--stdin` option)
 - **Resize** — change terminal dimensions
 - **Replace Text** — find and replace text in output events
+- **Theme** — pick from 12 built-in terminal color themes (asciinema, catppuccin variants, dracula, gruvbox-dark, monokai, nord, solarized-dark/light, tango); theme is stored in the cast header and applied to both the live preview and SVG export
 - **Undo / Redo** — full history (Ctrl+Z / Ctrl+Y)
 - **Export** — download as `asciicast v2` or animated **SVG** (with window chrome and cursor options)
+- **Snapshot** — export a single frame at the current playhead position as a static **SVG** or **PNG**
 - **Load Sample** — try the editor instantly with a built-in example recording
 - Tool options (idle threshold, idle length, key interval) are remembered across sessions via localStorage
 
