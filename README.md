@@ -51,5 +51,5 @@ npm run build   # outputs to dist/
 - [MUI v5](https://mui.com/)
 - [Vite 5](https://vitejs.dev/)
 - [asciinema-player v3](https://github.com/asciinema/asciinema-player)
-- [svg-term](https://github.com/marionebl/svg-term) (forked, browser-compatible build)
+- [svg-term-browser](https://github.com/the8tre/svg-term-browser) (browser-compatible build forked from [marionebl/svg-term](https://github.com/marionebl/svg-term))
 - TypeScript
