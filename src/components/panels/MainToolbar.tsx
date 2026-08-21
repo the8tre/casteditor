@@ -17,6 +17,7 @@ import { useRef, useState } from 'react';
 import { useEditor } from '../../state/documentStore';
 import { useFileLoader } from '../../hooks/useFileLoader';
 import ExportButton from '../ExportButton';
+import SnapshotButton from '../SnapshotButton';
 
 export default function MainToolbar() {
   const { state, dispatch } = useEditor();
@@ -96,6 +97,7 @@ export default function MainToolbar() {
             </span>
           </Tooltip>
 
+          <SnapshotButton />
           <ExportButton />
         </Box>
 
